@@ -416,3 +416,23 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Secrets (NEVER commit environment-specific overrides)
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+
+
+# Logs
+logs/
+*.log
+
+
+# Test results & coverage
+TestResults/
+coverage/
+
+
+# Docker
+.dockerignore
+
