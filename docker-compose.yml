@@ -1,0 +1,39 @@
+
+services:
+  api:
+    build: .
+    container_name: todoapi
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=todoapi;Username=postgres;Password=postgres
+      - Jwt__Secret=CHANGE_THIS_TO_A_32_CHAR_OR_LONGER_SECRET_KEY
+      - Jwt__Issuer=TodoApi
+      - Jwt__Audience=TodoApiClients
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+
+  db:
+    image: postgres:16-alpine
+    container_name: todoapi-db
+    environment:
+      POSTGRES_DB: todoapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:
