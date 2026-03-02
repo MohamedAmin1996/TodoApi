@@ -433,6 +433,4 @@ TestResults/
 coverage/
 
 
-# Docker
-.dockerignore
 
